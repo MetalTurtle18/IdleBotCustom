@@ -34,6 +34,7 @@ public class DiscordAPIManager {
     private final IdleBot plugin;
     public static JDA bot;
     public static TextChannel channel;
+    public static TextChannel whitelistChannel;
 
     public DiscordAPIManager(IdleBot plugin) {
         config = IdleBot.getConfigManager();
@@ -47,30 +48,31 @@ public class DiscordAPIManager {
             plugin.disablePlugin();
         }
         bot.addEventListener(new DiscordMessageEvent());
-        setActivity();
+        //setActivity(); // I don't need the activity
         getChannel();
         Messenger.sendMessage("Successfully connected to Discord as " + bot.getSelfUser().getAsTag(), MessageLevel.INFO);
         Messenger.sendMessage("Open the following url to invite the bot: " + bot.getInviteUrl(), MessageLevel.INFO);
     }
 
-    private void setActivity() {
-        Presence presence = bot.getPresence();
-        switch (config.ACTIVITY_TYPE) {
-            case "WATCHING":
-                presence.setPresence(Activity.watching(config.ACTIVITY_MESSAGE), false);
-                break;
-            case "PLAYING":
-                presence.setPresence(Activity.playing(config.ACTIVITY_MESSAGE), false);
-                break;
-            case "LISTENING":
-                presence.setPresence(Activity.listening(config.ACTIVITY_MESSAGE), false);
-                break;
-        }
-    }
+//    private void setActivity() {
+//        Presence presence = bot.getPresence();
+//        switch (config.ACTIVITY_TYPE) {
+//            case "WATCHING":
+//                presence.setPresence(Activity.watching(config.ACTIVITY_MESSAGE), false);
+//                break;
+//            case "PLAYING":
+//                presence.setPresence(Activity.playing(config.ACTIVITY_MESSAGE), false);
+//                break;
+//            case "LISTENING":
+//                presence.setPresence(Activity.listening(config.ACTIVITY_MESSAGE), false);
+//                break;
+//        }
+//    }
 
     private void getChannel() {
-        if (bot.getTextChannelById(config.CHANNEL_ID) != null) {
+        if (bot.getTextChannelById(config.CHANNEL_ID) != null && bot.getTextChannelById(config.WHITELIST_CHANNEL_ID) != null) {
             channel = bot.getTextChannelById(config.CHANNEL_ID);
+            whitelistChannel = bot.getTextChannelById(config.WHITELIST_CHANNEL_ID);
         } else {
             Messenger.sendMessage("Invalid Discord channel specified in config", MessageLevel.FATAL_ERROR);
             plugin.disablePlugin();

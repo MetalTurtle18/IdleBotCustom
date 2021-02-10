@@ -38,6 +38,7 @@ public class ConfigManager {
     public final String ACTIVITY_TYPE;
     public final String ACTIVITY_MESSAGE;
     public final String CHANNEL_ID;
+    public final String WHITELIST_CHANNEL_ID;
     public final int DEFAULT_IDLE_TIME;
     public final int MINIMUM_IDLE_TIME;
     public final int MAXIMUM_IDLE_TIME;
@@ -52,7 +53,8 @@ public class ConfigManager {
         config.loadAll();
         BOT_TOKEN = config.getString("botToken");
         CHANNEL_ID = config.getString("channelID");
-        if (BOT_TOKEN.equals("<Bot Token Here>") || CHANNEL_ID.equals("<Channel ID Here>"))
+        WHITELIST_CHANNEL_ID = config.getString("whitelistChannelID");
+        if (BOT_TOKEN.equals("<Bot Token Here>") || CHANNEL_ID.equals("<Channel ID Here>") || WHITELIST_CHANNEL_ID.equals("<Channel ID Here>"))
             invalidateConfig("botToken and/or channelToken need to be set in config.yml.", plugin);
         ACTIVITY_TYPE = config.getString("customBotActivity.type");
         ACTIVITY_MESSAGE = config.getString("customBotActivity.message");

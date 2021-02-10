@@ -17,6 +17,11 @@
 
 package io.github.camshaft54.idlebot.discord;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import io.github.camshaft54.idlebot.IdleBot;
 import io.github.camshaft54.idlebot.util.Messenger;
 import io.github.camshaft54.idlebot.util.PersistentDataHandler;
@@ -27,11 +32,24 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.UUID;
 
 public class DiscordMessageEvent extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        // Linking
         if (event.getChannelType() == ChannelType.PRIVATE && !event.getAuthor().isBot()) {
             Message message = event.getMessage();
             MessageChannel channel = event.getChannel();
@@ -55,6 +73,40 @@ public class DiscordMessageEvent extends ListenerAdapter {
                 nfe.printStackTrace();
             }
         }
+
+        // Whitelisting
+//        if (event.getChannel().equals(DiscordAPIManager.whitelistChannel)) {
+//            Message message = event.getMessage();
+//            MessageChannel channel = event.getChannel();
+//            if (message.getContentRaw().length() >= 3 && message.getContentRaw().trim().startsWith("!w ")) {
+//                String playerName = message.getContentRaw().trim().substring(3);
+//                String playerUUID = null;
+//                try {
+//                    URL mojangAPIURL = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+//                    URLConnection mojangAPIURLConnection = mojangAPIURL.openConnection();
+//                    mojangAPIURLConnection.connect();
+//                    JsonParser jp = new JsonParser();
+//                    JsonObject jsonObject = jp.parse(new InputStreamReader((InputStream) mojangAPIURLConnection.getContent())).getAsJsonObject();
+//                    playerUUID = jsonObject.get("id").getAsString();
+//                    System.out.println(playerUUID);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                if (playerUUID == null) {
+//                    channel.sendMessage("Can't find that player").queue();
+//                } else {
+//                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+//                    if (player != null) {
+//                        player.setWhitelisted(true);
+//                        channel.sendMessage("Whitelisted " + player.getName()).queue();
+//                        message.addReaction("U+2705").queue();
+//                        Messenger.sendMessage("Whitelisted player " + player.getName() + " from Discord", MessageLevel.INFO);
+//                    } else {
+//                        channel.sendMessage("Can't find that player").queue();
+//                    }
+//                }
+//            }
+//        }
     }
 
     // This method is to set up default values for every player when they link their account

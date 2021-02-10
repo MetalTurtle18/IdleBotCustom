@@ -24,6 +24,7 @@
 botToken: <Bot Token Here>
 # This is the ID of the Discord channel you want the bot to send messages to | DO NOT INCLUDE THE <>
 channelID: <Channel ID Here>
+whitelistChannelID: <Channel ID Here>
 customBotActivity:
   # The type of activity in the bot's Discord status. Can be WATCHING, PLAYING, or LISTENING. Leave blank to disable
   type: WATCHING
